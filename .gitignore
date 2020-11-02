@@ -1,0 +1,12 @@
+# compiler output
+*.exe
+*.exp
+*.lib
+*.pdb
+*.ilk
+
+# project specific
+matrices/
+
+# editor folder
+.vscode/
