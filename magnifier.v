@@ -5,6 +5,7 @@ import magnification
 import syscalls
 import json
 import time
+import term
 
 const (
 	config_file     = 'memes.conf'
@@ -23,28 +24,28 @@ fn main() {
 		os.write_file(config_file, cfg_str)
 	}
 	cfg_str2 := os.read_file(config_file) or {
-		println('failed to read config file')
+		eprintln(term.fail_message('failed to read config file'))
 		return
 	}
 	config := json.decode(Config, cfg_str2) or {
-		println('failed to decode config file')
+		eprintln(term.fail_message('failed to decode config file'))
 		return
 	}
 	if !os.exists(matrices_folder) {
-		eprintln('generate matrixes using matrix-gen.exe at first')
+		eprintln(term.fail_message('generate matrixes using matrix-gen.exe at first'))
 		return
 	}
 	files := os.ls(matrices_folder) or {
-		eprintln("failed to list \'$matrices_folder\' folder")
+		eprintln(term.fail_message("failed to list \'$matrices_folder\' folder"))
 		return
 	}
 	if files.len == 0 {
-		eprintln('generate matrices using matrix-gen.exe at first')
+		eprintln(term.fail_message('generate matrices using matrix-gen.exe at first'))
 		return
 	}
 	res := magnification.initialize()
 	if !res {
-		eprintln('failed to initialize magnifier API')
+		eprintln(term.fail_message('failed to initialize magnifier API'))
 		return
 	}
 	if config.block_input {
@@ -57,7 +58,7 @@ fn main() {
 			break
 		}
 		data2 := os.read_file(matrices_folder + os.path_separator + files[rand.int_in_range(0, files.len)]) or {
-			eprintln('failed to read file')
+			eprintln(term.fail_message('failed to read file'))
 			continue
 		}
 		array2 := data2.replace('\r\n', ' ').split(' ')

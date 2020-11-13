@@ -9,7 +9,7 @@ fn main() {
 	}
 	n := strconv.atoi(os.args[1])
 	if n <= 0 {
-		println('invalid amount')
+		eprintln(term.fail_message('invalid amount'))
 		return
 	}
 	if !os.exists('matrices') {
